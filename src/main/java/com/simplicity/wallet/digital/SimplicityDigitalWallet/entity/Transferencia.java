@@ -1,4 +1,4 @@
 package com.simplicity.wallet.digital.SimplicityDigitalWallet.entity;
 
-public class Transferencia {
+public class Transferencia extends Transacao{
 }
