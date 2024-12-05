@@ -1,9 +1,6 @@
 package com.simplicity.wallet.digital.SimplicityDigitalWallet.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -16,7 +13,14 @@ public class Conta {
     @Id
     private Long id;
     private Long numeroConta;
-    private List<Transacao> transacoes;
+
+    // Relacionamento de uma Conta para muitas Transações de Origem
+    @OneToMany(mappedBy = "contaOrigiem")
+    private List<Transacao> transacoesOrigem;
+
+    // Relacionamento de uma Conta para muitas Transações de Destino
+    @OneToMany(mappedBy = "contaDestino")
+    private List<Transacao> transacoesDestino;
     private LocalDateTime dataCriacao;
 
     @ManyToOne
