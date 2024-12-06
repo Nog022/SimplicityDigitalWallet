@@ -1,3 +1,5 @@
+drop database wallet_db;
+
 CREATE DATABASE IF NOT EXISTS wallet_db CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 USE wallet_db;
 
@@ -57,31 +59,33 @@ CREATE TABLE Pix (
                      FOREIGN KEY (idConta) REFERENCES Conta(id)
 ) CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Tabela Transacao
-CREATE TABLE Transacao (
-                           id VARCHAR(255) PRIMARY KEY,
-                           dataTransacao TIMESTAMP,
-                           tipo VARCHAR(255),
-                           valor DECIMAL(15, 2),
-                           idContaOrigem BIGINT,
-                           idContaDestino BIGINT,
-                           dataVencimentoBoleto TIMESTAMP,
-                           FOREIGN KEY (idContaOrigem) REFERENCES Conta(id),
-                           FOREIGN KEY (idContaDestino) REFERENCES Conta(id)
-) CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
 -- Tabela TipoTransacao
 CREATE TABLE TipoTransacao (
                                id BIGINT AUTO_INCREMENT PRIMARY KEY,
                                descricao VARCHAR(50) NOT NULL
 ) CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- Tabela Transacao
+CREATE TABLE Transacao (
+                           id VARCHAR(255) PRIMARY KEY,
+                           dataTransacao TIMESTAMP,
+                           idTipo BIGINT,
+                           valor DECIMAL(15, 2),
+                           idContaOrigem BIGINT,
+                           idContaDestino BIGINT,
+                           FOREIGN KEY (idContaOrigem) REFERENCES Conta(id),
+                           FOREIGN KEY (idContaDestino) REFERENCES Conta(id),
+                           FOREIGN KEY (idTipo) REFERENCES TipoTransacao(id)
+) CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+
 -- Tabela Boleto
 CREATE TABLE Boleto (
                         id VARCHAR(255) PRIMARY KEY,
                         valor DECIMAL(15, 2) NOT NULL,
                         dataVencimento DATE NOT NULL,
-                        status VARCHAR(20) NOT NULL,
+                        statusBoleto VARCHAR(20) NOT NULL,
                         dataGeracao TIMESTAMP,
                         idTransacao VARCHAR(255),
                         FOREIGN KEY (idTransacao) REFERENCES Transacao(id)
@@ -101,3 +105,12 @@ CREATE TABLE PermissaoPerfil (
                                  FOREIGN KEY (perfil_id) REFERENCES Perfil(id),
                                  FOREIGN KEY (permissao_id) REFERENCES Permissao(id)
 ) CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+CREATE TABLE Extrato (
+                         id INT AUTO_INCREMENT PRIMARY KEY,
+                         dataExtrato TIMESTAMP NOT NULL,
+                         idConta BIGINT NOT NULL,
+                         descricao TEXT,
+                         FOREIGN KEY (idConta) REFERENCES Conta(id)
+)CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

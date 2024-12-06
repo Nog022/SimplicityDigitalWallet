@@ -4,22 +4,22 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.security.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
 @Data
-public abstract class Transacao {
-
+public class Transacao {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
+
+    private Timestamp dataTransacao;
+    private Long idTipo;
     private BigDecimal valor;
-    private LocalDateTime dataTransacao;
 
-    private Long  contaOrigiem;
+    private Long idContaOrigem;
+    private Long idContaDestino;
 
-    private Long  contaDestino;
-    private String tipo;
-    private LocalDate dataVencimentoBoleto;
+
 }

@@ -12,7 +12,6 @@ import java.time.LocalDate;
 public class PessoaFisica extends Usuario{
 
     private String cpf;
-    private LocalDate dataNascimento;
     private String rg;
     private String nome;
 }
