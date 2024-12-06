@@ -13,6 +13,7 @@ public class Conta {
     @Id
     private Long id;
     private Long numeroConta;
+    private Long saldo;
 
     // Relacionamento de uma Conta para muitas Transações de Origem
     @OneToMany(mappedBy = "contaOrigiem")
@@ -23,9 +24,8 @@ public class Conta {
     private List<Transacao> transacoesDestino;
     private LocalDateTime dataCriacao;
 
-    @ManyToOne
-    @JoinColumn(name = "usuario_id")
-    private Usuario usuario;
+
+    private Long usuario_id;
 
 
 }
