@@ -17,12 +17,7 @@ public class EnderecoServiceImpl implements EnderecoService {
 
     @Override
     public Endereco salvar(Endereco endereco) {
-
-        if(endereco != null && enderecoRepository != null){
-            return enderecoRepository.save(endereco);
-        }
-
-        return null;
+        return enderecoRepository.save(endereco);
 
     }
 
