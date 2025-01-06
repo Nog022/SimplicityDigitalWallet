@@ -1,103 +1,78 @@
-CREATE DATABASE IF NOT EXISTS wallet_db CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-USE wallet_db;
-
--- Tabela Perfil
-CREATE TABLE Perfil (
-                        id BIGINT AUTO_INCREMENT PRIMARY KEY,
-                        nome VARCHAR(100) NOT NULL
-) CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+-- Criar o banco de dados
+CREATE DATABASE IF NOT EXISTS simplicity_digital_db CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+USE simplicity_digital_db;
 
 -- Tabela Endereco
 CREATE TABLE Endereco (
-                          id BIGINT AUTO_INCREMENT PRIMARY KEY,
-                          logradouro VARCHAR(100),
-                          numero VARCHAR(20),
-                          complemento VARCHAR(50),
-                          bairro VARCHAR(50),
-                          cidade VARCHAR(50),
-                          estado VARCHAR(2),
-                          cep VARCHAR(10)
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    rua VARCHAR(100),
+    numero VARCHAR(20),
+    complemento VARCHAR(50),
+    bairro VARCHAR(50),
+    cidade VARCHAR(50),
+    uf VARCHAR(2),
+    cep VARCHAR(10)
 ) CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Tabela Contato
 CREATE TABLE Contato (
-                         id BIGINT AUTO_INCREMENT PRIMARY KEY,
-                         telefone VARCHAR(20),
-                         email VARCHAR(100)
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    ddd VARCHAR(2),
+    telefone VARCHAR(20),
+    email VARCHAR(100)
 ) CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Tabela Usuario
 CREATE TABLE Usuario (
-                         numeroDocumento BIGINT PRIMARY KEY,
-                         nome VARCHAR(100) NOT NULL,
-                         senha VARCHAR(100) NOT NULL,
-                         dataNascimento DATE,
-                         idEndereco BIGINT,
-                         idContato BIGINT,
-                         idPerfil BIGINT,
-                         FOREIGN KEY (idEndereco) REFERENCES Endereco(id),
-                         FOREIGN KEY (idContato) REFERENCES Contato(id),
-                         FOREIGN KEY (idPerfil) REFERENCES Perfil(id)
+    cpf BIGINT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    senha VARCHAR(100) NOT NULL,
+    dataNascimento DATE,
+    idEndereco BIGINT,
+    idContato BIGINT,
+    isAdmin BOOLEAN,
+    FOREIGN KEY (idEndereco) REFERENCES Endereco(id),
+    FOREIGN KEY (idContato) REFERENCES Contato(id)
 ) CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Tabela Conta
 CREATE TABLE Conta (
-                       id BIGINT AUTO_INCREMENT PRIMARY KEY,
-                       numeroConta BIGINT,
-                       saldo DECIMAL(15, 2),
-                       dataCriacao TIMESTAMP,
-                       idUsuario BIGINT,
-                       FOREIGN KEY (idUsuario) REFERENCES Usuario(numeroDocumento)
-) CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- Tabela Pix
-CREATE TABLE Pix (
-                     chavePix VARCHAR(255) PRIMARY KEY,
-                     idConta BIGINT,
-                     FOREIGN KEY (idConta) REFERENCES Conta(id)
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    numeroConta BIGINT,
+    saldo DECIMAL(15, 2),
+    dataCriacao TIMESTAMP,
+    idUsuario BIGINT,
+    FOREIGN KEY (idUsuario) REFERENCES Usuario(cpf)
 ) CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Tabela Transacao
 CREATE TABLE Transacao (
-                           id VARCHAR(255) PRIMARY KEY,
-                           dataTransacao TIMESTAMP,
-                           tipo VARCHAR(255),
-                           valor DECIMAL(15, 2),
-                           idContaOrigem BIGINT,
-                           idContaDestino BIGINT,
-                           dataVencimentoBoleto TIMESTAMP,
-                           FOREIGN KEY (idContaOrigem) REFERENCES Conta(id),
-                           FOREIGN KEY (idContaDestino) REFERENCES Conta(id)
+    id VARCHAR(255) PRIMARY KEY,
+    dataTransacao TIMESTAMP,
+    valor DECIMAL(15, 2),
+    idContaOrigem BIGINT,
+    idContaDestino BIGINT,
+    FOREIGN KEY (idContaOrigem) REFERENCES Conta(id),
+    FOREIGN KEY (idContaDestino) REFERENCES Conta(id)
 ) CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Tabela TipoTransacao
-CREATE TABLE TipoTransacao (
-                               id BIGINT AUTO_INCREMENT PRIMARY KEY,
-                               descricao VARCHAR(50) NOT NULL
+-- Tabela Saque
+CREATE TABLE Saque (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    valor DECIMAL(15, 2),
+    idConta BIGINT,
+    FOREIGN KEY (idConta) REFERENCES Conta(id)
 ) CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Tabela Boleto
-CREATE TABLE Boleto (
-                        id VARCHAR(255) PRIMARY KEY,
-                        valor DECIMAL(15, 2) NOT NULL,
-                        dataVencimento DATE NOT NULL,
-                        status VARCHAR(20) NOT NULL,
-                        dataGeracao TIMESTAMP,
-                        idTransacao VARCHAR(255),
-                        FOREIGN KEY (idTransacao) REFERENCES Transacao(id)
-) CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+-- Tipo para Deposito
+CREATE TYPE tipoDeposito AS ENUM ('PIX', 'Boleto');
 
--- Tabela Permissao
-CREATE TABLE Permissao (
-                           id BIGINT AUTO_INCREMENT PRIMARY KEY,
-                           nome VARCHAR(100) NOT NULL
-) CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- Tabela PermissaoPerfil (associação de permissões e perfis)
-CREATE TABLE PermissaoPerfil (
-                                 perfil_id BIGINT,
-                                 permissao_id BIGINT,
-                                 PRIMARY KEY (perfil_id, permissao_id),
-                                 FOREIGN KEY (perfil_id) REFERENCES Perfil(id),
-                                 FOREIGN KEY (permissao_id) REFERENCES Permissao(id)
+-- Tabela Deposito
+CREATE TABLE Deposito (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    valor DECIMAL(15, 2),
+    idConta BIGINT,
+    dataTransacao TIMESTAMP,
+    tipo tipoDeposito NOT NULL,
+    FOREIGN KEY (idConta) REFERENCES Conta(id)
 ) CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

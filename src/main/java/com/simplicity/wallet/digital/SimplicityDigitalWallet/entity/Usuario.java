@@ -1,17 +1,39 @@
 package com.simplicity.wallet.digital.SimplicityDigitalWallet.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Entity
+import java.time.LocalDate;
+
 @Data
-public abstract  class Usuario {
-
+@NoArgsConstructor
+@Entity
+@Table(name = "usuario", schema = "simplicity_digital_db")
+public class Usuario {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "cpf", nullable = false)
     private Long id;
-    private String email;
+
+    @Column(name = "nome", nullable = false, length = 100)
+    private String nome;
+
+    @Column(name = "senha", nullable = false, length = 100)
     private String senha;
-    private String endereco;
-    private String celular;
+
+    @Column(name = "dataNascimento")
+    private LocalDate dataNascimento;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "idEndereco")
+    private Endereco idEndereco;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "idContato")
+    private Contato idContato;
+
+    @Column(name = "isAdmin")
+    private Boolean isAdmin;
+
 }

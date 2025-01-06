@@ -2,30 +2,32 @@ package com.simplicity.wallet.digital.SimplicityDigitalWallet.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-import java.util.List;
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 
-@Entity
 @Data
+@NoArgsConstructor
+@Entity
+@Table(name = "conta", schema = "simplicity_digital_db")
 public class Conta {
-
     @Id
+
+    @Column(name = "id", nullable = false)
     private Long id;
+
+    @Column(name = "numeroConta")
     private Long numeroConta;
-    private Long saldo;
 
-    // Relacionamento de uma Conta para muitas Transações de Origem
-    @OneToMany(mappedBy = "contaOrigiem")
-    private List<Transacao> transacoesOrigem;
+    @Column(name = "saldo", precision = 15, scale = 2)
+    private BigDecimal saldo;
 
-    // Relacionamento de uma Conta para muitas Transações de Destino
-    @OneToMany(mappedBy = "contaDestino")
-    private List<Transacao> transacoesDestino;
-    private LocalDateTime dataCriacao;
+    @Column(name = "dataCriacao")
+    private Timestamp dataCriacao;
 
-
-    private Long usuario_id;
-
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "idUsuario")
+    private Usuario idUsuario;
 
 }

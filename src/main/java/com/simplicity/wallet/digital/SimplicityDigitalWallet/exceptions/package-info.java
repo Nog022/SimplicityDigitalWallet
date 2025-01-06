@@ -1,0 +1,1 @@
+package com.simplicity.wallet.digital.SimplicityDigitalWallet.exceptions;

@@ -5,13 +5,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
 
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name = "deposito", schema = "simplicity_digital_db")
-public class Deposito {
+@Table(name = "saque", schema = "simplicity_digital_db")
+public class Saque {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -23,12 +22,5 @@ public class Deposito {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idConta")
     private Conta idConta;
-
-    @Column(name = "dataTransacao")
-    private Timestamp dataTransacao;
-
-    @Lob
-    @Column(name = "tipo", nullable = false)
-    private String tipo;
 
 }
