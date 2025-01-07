@@ -1,5 +1,6 @@
 package com.simplicity.wallet.digital.SimplicityDigitalWallet.entity;
 
+import com.simplicity.wallet.digital.SimplicityDigitalWallet.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -33,7 +34,7 @@ public class Usuario {
     @JoinColumn(name = "idContato")
     private Contato idContato;
 
-    @Column(name = "isAdmin")
-    private Boolean isAdmin;
+    @Enumerated(EnumType.STRING)
+    private UserRole role;
 
 }
