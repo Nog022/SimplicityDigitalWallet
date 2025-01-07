@@ -1,1 +1,0 @@
-package com.simplicity.wallet.digital.SimplicityDigitalWallet.repository;
