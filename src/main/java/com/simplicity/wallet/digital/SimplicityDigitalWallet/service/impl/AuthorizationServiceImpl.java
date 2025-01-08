@@ -1,5 +1,6 @@
 package com.simplicity.wallet.digital.SimplicityDigitalWallet.service.impl;
 
+import com.simplicity.wallet.digital.SimplicityDigitalWallet.config.SecurityFilter;
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.config.TokenService;
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.dto.AuthorizationDTO;
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.dto.LoginResponseDTO;
@@ -7,6 +8,8 @@ import com.simplicity.wallet.digital.SimplicityDigitalWallet.dto.RegisterDTO;
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.entity.Usuario;
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.repository.UsuarioRepository;
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.service.AuthorizationService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class AuthorizationServiceImpl implements AuthorizationService {
+    public static Logger logger = LoggerFactory.getLogger(AuthorizationServiceImpl.class);
 
     @Autowired
     private UsuarioRepository usuarioRepository;
@@ -36,12 +40,30 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 
     @Override
     public LoginResponseDTO login(AuthorizationDTO data) {
-        var usernamePassword = new UsernamePasswordAuthenticationToken(data.username(), data.password());
-        var auth = this.authenticationManager.authenticate(usernamePassword);
+        try {
+            logger.info("Iniciando login");
+            logger.info("Dados recebidos: {}", data);
 
-        var token = tokenService.generateToken((Usuario) auth.getPrincipal());
+            var usernamePassword = new UsernamePasswordAuthenticationToken(data.username(), data.password());
+            logger.info("Token de autenticação gerado");
 
-        return new LoginResponseDTO(token);
+            logger.info("usernamePassword: {}", usernamePassword);
+
+            var auth = this.authenticationManager.authenticate(usernamePassword);
+            logger.info("Autenticação bem-sucedida");
+
+            var usuario = (Usuario) auth.getPrincipal();
+            logger.info("Usuário autenticado: {}", usuario.getUsername());
+
+            var token = tokenService.generateToken(usuario);
+            logger.info("Token gerado");
+
+            return new LoginResponseDTO(token);
+        } catch (Exception e) {
+            logger.error("Erro durante o login: {}", e.getMessage(), e);
+            return new LoginResponseDTO("Erro: " + e.getMessage());
+        }
+
     }
 
     @Override
