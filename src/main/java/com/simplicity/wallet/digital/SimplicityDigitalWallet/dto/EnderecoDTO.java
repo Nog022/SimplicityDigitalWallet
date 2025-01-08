@@ -1,6 +1,6 @@
 package com.simplicity.wallet.digital.SimplicityDigitalWallet.dto;
 
-public record CadastrarEnderecoDTO(
+public record EnderecoDTO(
         String rua,
         String numero,
         String complemento,

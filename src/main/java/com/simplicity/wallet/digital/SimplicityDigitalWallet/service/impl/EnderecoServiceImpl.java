@@ -1,7 +1,7 @@
 package com.simplicity.wallet.digital.SimplicityDigitalWallet.service.impl;
 
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.dto.AtualizarEnderecoDTO;
-import com.simplicity.wallet.digital.SimplicityDigitalWallet.dto.CadastrarEnderecoDTO;
+import com.simplicity.wallet.digital.SimplicityDigitalWallet.dto.EnderecoDTO;
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.entity.Endereco;
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.repository.EnderecoRepository;
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.service.EnderecoService;
@@ -17,16 +17,16 @@ public class EnderecoServiceImpl implements EnderecoService {
     private EnderecoRepository enderecoRepository;
 
     @Override
-    public Endereco salvar(CadastrarEnderecoDTO cadastrarEnderecoDto) {
+    public Endereco salvar(EnderecoDTO enderecoDto) {
         Endereco endereco = new Endereco();
 
-        endereco.setRua(cadastrarEnderecoDto.rua());
-        endereco.setNumero(cadastrarEnderecoDto.numero());
-        endereco.setComplemento(cadastrarEnderecoDto.complemento());
-        endereco.setBairro(cadastrarEnderecoDto.bairro());
-        endereco.setCidade(cadastrarEnderecoDto.cidade());
-        endereco.setUf(cadastrarEnderecoDto.uf());
-        endereco.setCep(cadastrarEnderecoDto.cep());
+        endereco.setRua(enderecoDto.rua());
+        endereco.setNumero(enderecoDto.numero());
+        endereco.setComplemento(enderecoDto.complemento());
+        endereco.setBairro(enderecoDto.bairro());
+        endereco.setCidade(enderecoDto.cidade());
+        endereco.setUf(enderecoDto.uf());
+        endereco.setCep(enderecoDto.cep());
 
 
         return enderecoRepository.save(endereco);
