@@ -27,7 +27,7 @@ public class Conta {
     private Timestamp dataCriacao;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "idUsuario")
+    @JoinColumn(name = "idUsuario", nullable = false)
     private Usuario idUsuario;
 
 }
