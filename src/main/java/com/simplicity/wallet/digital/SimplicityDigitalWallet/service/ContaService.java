@@ -9,7 +9,7 @@ import java.util.List;
 public interface ContaService {
     Conta salvarConta(ContaDTO conta);
     Conta buscarContaPorId(Long id);
-    void deletarConta(Long id);
+    void deletarConta(Long numeroConta);
     BigDecimal buscarSaldoConta(Long id);
-    void atualizarSaldoConta(String numeroConta, BigDecimal valor, boolean isSaida);
+    void atualizarSaldoConta(Long numeroConta, BigDecimal valor, boolean isSaida);
 }

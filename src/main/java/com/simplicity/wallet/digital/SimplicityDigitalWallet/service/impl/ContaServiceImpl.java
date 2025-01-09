@@ -28,8 +28,9 @@ public class ContaServiceImpl implements ContaService {
 
     @Override
     public Conta salvarConta(ContaDTO contaDto) {
-        Usuario usuario = usuarioRepository.findByCpf(contaDto.idUsuario())
+        Usuario usuario = usuarioRepository.findByCpf(String.valueOf(contaDto.idUsuario()))
                 .orElseThrow(() -> new IllegalArgumentException("Usuário com CPF " + contaDto.idUsuario() + " não encontrado."));
+
         Conta novaConta = new Conta();
 
         novaConta.setNumeroConta(gerarNumeroConta());
@@ -47,20 +48,22 @@ public class ContaServiceImpl implements ContaService {
     }
 
     @Override
-    public void deletarConta(Long id) {
-        Conta conta = buscarContaPorId(id);
+    public void deletarConta(Long numeroConta) {
+        Conta conta = contaRepository.findByNumeroConta(numeroConta)
+                .orElseThrow(() -> new ContaNaoEncontradaException("Conta com número " + numeroConta + " não encontrada."));
         contaRepository.delete(conta);
     }
 
     @Override
-    public BigDecimal buscarSaldoConta(Long id) {
-        Conta conta = buscarContaPorId(id);
-        return conta.getSaldo() == null ? BigDecimal.ZERO : conta.getSaldo();
+    public BigDecimal buscarSaldoConta(Long numeroConta) {
+        Conta conta = contaRepository.findByNumeroConta(numeroConta)
+                .orElseThrow(() -> new ContaNaoEncontradaException("Conta com número " + numeroConta + " não encontrada."));
+        return conta.getSaldo();
     }
 
     @Override
-    public void atualizarSaldoConta(String numeroConta, BigDecimal valor, boolean isSaida) {
-        Conta conta = contaRepository.findByNumeroConta(Long.parseLong(numeroConta))
+    public void atualizarSaldoConta(Long numeroConta, BigDecimal valor, boolean isSaida) {
+        Conta conta = contaRepository.findByNumeroConta(numeroConta)
                 .orElseThrow(() -> new ContaNaoEncontradaException("Conta com número " + numeroConta + " não encontrada."));
 
         BigDecimal ajuste = isSaida ? valor.negate() : valor;
