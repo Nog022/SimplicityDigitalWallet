@@ -4,7 +4,6 @@ import com.simplicity.wallet.digital.SimplicityDigitalWallet.dto.ContaDTO;
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.entity.Conta;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 public interface ContaService {
     Conta salvarConta(ContaDTO conta);
