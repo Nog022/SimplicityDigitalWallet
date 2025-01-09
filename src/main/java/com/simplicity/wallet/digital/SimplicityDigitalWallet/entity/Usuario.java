@@ -1,5 +1,6 @@
 package com.simplicity.wallet.digital.SimplicityDigitalWallet.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -36,10 +37,12 @@ public class Usuario implements UserDetails {
     private LocalDate dataNascimento;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     @JoinColumn(name = "idEndereco")
     private Endereco idEndereco;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     @JoinColumn(name = "idContato")
     private Contato idContato;
 

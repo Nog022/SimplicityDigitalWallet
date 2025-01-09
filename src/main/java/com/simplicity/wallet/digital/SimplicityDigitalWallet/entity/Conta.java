@@ -13,7 +13,7 @@ import java.sql.Timestamp;
 @Table(name = "conta", schema = "simplicity_digital_db")
 public class Conta {
     @Id
-
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
@@ -27,7 +27,7 @@ public class Conta {
     private Timestamp dataCriacao;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "idUsuario")
+    @JoinColumn(name = "idUsuario", nullable = false)
     private Usuario idUsuario;
 
 }
