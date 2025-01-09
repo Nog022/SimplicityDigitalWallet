@@ -1,30 +1,44 @@
 package com.simplicity.wallet.digital.SimplicityDigitalWallet.controller;
 
+import com.simplicity.wallet.digital.SimplicityDigitalWallet.dto.ContaDTO;
+import com.simplicity.wallet.digital.SimplicityDigitalWallet.entity.Conta;
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.service.ContaService;
+import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
-import java.util.Map;
 
 @RestController
-@RequestMapping(value ="/api/conta")
+@RequestMapping(value ="/conta")
 public class ContaController {
 
     @Autowired
     private ContaService contaService;
 
-    @GetMapping("/{id}/saldo")
-    public ResponseEntity<Map<String, Object>> mostrarSaldo(@PathVariable Long id) {
-        BigDecimal saldo = contaService.buscarSaldoConta(id);
-        return ResponseEntity.ok(Map.of(
-                "mensagem", "Saldo encontrado",
-                "saldo", saldo
-        ));
+    @PostMapping("/save")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Conta save(@RequestBody @Validated ContaDTO contaDto) {
+        return contaService.salvarConta(contaDto);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable("id") @Validated Long id) {
+        contaService.deletarConta(id);
+    }
+
+    @GetMapping("/saldo")
+    public BigDecimal mostrarSaldo(Authentication authentication) {
+        String numeroConta = authentication.name();
+        return contaService.buscarSaldoConta(Long.valueOf(numeroConta));
+    }
+
+    @GetMapping("/conta/{id}")
+    public Conta contaPorId(@PathVariable Long id) {
+        return contaService.buscarContaPorId(id);
     }
 
 }
