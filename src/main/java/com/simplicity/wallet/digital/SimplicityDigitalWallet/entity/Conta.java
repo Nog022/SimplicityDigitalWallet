@@ -13,7 +13,7 @@ import java.sql.Timestamp;
 @Table(name = "conta", schema = "simplicity_digital_db")
 public class Conta {
     @Id
-
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 

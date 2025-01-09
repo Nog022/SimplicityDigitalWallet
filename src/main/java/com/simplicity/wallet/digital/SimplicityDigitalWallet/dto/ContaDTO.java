@@ -7,6 +7,6 @@ public record ContaDTO(
         Long numeroConta,
         BigDecimal saldo,
         Timestamp dataCriacao,
-        Long idUsuario
+        String idUsuario
 ) {
 }
