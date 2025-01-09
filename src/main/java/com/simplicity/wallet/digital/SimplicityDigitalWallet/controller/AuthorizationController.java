@@ -4,7 +4,11 @@ import com.simplicity.wallet.digital.SimplicityDigitalWallet.config.TokenService
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.dto.AuthorizationDTO;
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.dto.LoginResponseDTO;
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.dto.RegisterDTO;
+import com.simplicity.wallet.digital.SimplicityDigitalWallet.entity.Contato;
+import com.simplicity.wallet.digital.SimplicityDigitalWallet.entity.Endereco;
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.entity.Usuario;
+import com.simplicity.wallet.digital.SimplicityDigitalWallet.repository.ContatoRepository;
+import com.simplicity.wallet.digital.SimplicityDigitalWallet.repository.EnderecoRepository;
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.repository.UsuarioRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +36,12 @@ public class AuthorizationController {
 
     @Autowired
     private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private ContatoRepository contatoRepository;
+
+    @Autowired
+    private EnderecoRepository enderecoRepository;
 
 
     @Autowired
@@ -75,6 +85,9 @@ public class AuthorizationController {
         logger.info("Dados recebidos: {}", registerDTO);
 
         if(this.usuarioRepository.findByCpf(registerDTO.cpf()).isPresent()) return ResponseEntity.badRequest().build();
+
+        enderecoRepository.save(registerDTO.idEndereco());
+        contatoRepository.save(registerDTO.idContato());
 
         String encryptPassword = new BCryptPasswordEncoder().encode(registerDTO.senha());
         Usuario usuario = new Usuario(
