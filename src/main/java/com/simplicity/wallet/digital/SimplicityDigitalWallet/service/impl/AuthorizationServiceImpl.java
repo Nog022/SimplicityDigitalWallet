@@ -34,8 +34,10 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     private TokenService tokenService;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return usuarioRepository.findByNome(username);
+    public UserDetails loadUserByUsername(String cpf) throws UsernameNotFoundException {
+        return usuarioRepository.findByCpf(cpf)
+                .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado com CPF: " + cpf));
+
     }
 
     @Override
@@ -44,7 +46,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
             logger.info("Iniciando login");
             logger.info("Dados recebidos: {}", data);
 
-            var usernamePassword = new UsernamePasswordAuthenticationToken(data.username(), data.password());
+            var usernamePassword = new UsernamePasswordAuthenticationToken(data.cpf(), data.password());
             logger.info("Token de autenticação gerado");
 
             logger.info("usernamePassword: {}", usernamePassword);
@@ -69,10 +71,14 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     @Override
     public ResponseEntity<Usuario> register(RegisterDTO registerDTO) {
 
-        if(this.usuarioRepository.findByNome(registerDTO.nome()) != null) return ResponseEntity.badRequest().build();
+        logger.info("Iniciando registro");
+        logger.info("Dados recebidos: {}", registerDTO);
+
+        if(this.usuarioRepository.findByCpf(registerDTO.cpf()).isPresent()) return ResponseEntity.badRequest().build();
 
         String encryptPassword = new BCryptPasswordEncoder().encode(registerDTO.senha());
         Usuario usuario = new Usuario(
+                registerDTO.cpf(),
                 registerDTO.nome(),
                 encryptPassword,
                 registerDTO.dataNascimento(),

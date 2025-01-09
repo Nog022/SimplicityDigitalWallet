@@ -20,8 +20,11 @@ import java.util.List;
 public class Usuario implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "cpf", nullable = false)
+    @Column(name = "id", nullable = false)
     private Long id;
+
+    @Column(name = "cpf", nullable = false, unique = true)
+    private String cpf;
 
     @Column(name = "nome", nullable = false, length = 100)
     private String nome;
@@ -43,7 +46,8 @@ public class Usuario implements UserDetails {
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
-    public Usuario(String nome, String senha, LocalDate dataNascimento, Endereco idEndereco, Contato idContato, UserRole role) {
+    public Usuario(String cpf, String nome, String senha, LocalDate dataNascimento, Endereco idEndereco, Contato idContato, UserRole role) {
+        this.cpf = cpf;
         this.nome = nome;
         this.senha = senha;
         this.dataNascimento = dataNascimento;
@@ -62,7 +66,7 @@ public class Usuario implements UserDetails {
 
     @Override
     public String getUsername() {
-        return this.nome;
+        return this.cpf;
     }
 
     @Override

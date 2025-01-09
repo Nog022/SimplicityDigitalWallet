@@ -7,6 +7,7 @@ import com.simplicity.wallet.digital.SimplicityDigitalWallet.enums.UserRole;
 import java.time.LocalDate;
 
 public record RegisterDTO(
+        String cpf,
         String nome,
         String senha,
         LocalDate dataNascimento,
