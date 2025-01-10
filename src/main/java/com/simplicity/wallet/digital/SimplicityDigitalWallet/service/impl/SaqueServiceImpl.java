@@ -23,8 +23,11 @@ public class SaqueServiceImpl implements SaqueService {
 
     @Override
     public void realizarSaque(SaqueDTO saqueDTO) {
+        if (saqueDTO.valor().compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("O valor do saque deve ser maior que zero.");
+        }
         Conta conta = contaRepository.findByNumeroConta(saqueDTO.idConta())
-                .orElseThrow(() -> new ContaNaoEncontradaException("Conta não encontrada para o ID: " + saqueDTO.idConta()));
+                .orElseThrow(() -> new ContaNaoEncontradaException("Conta de número: " + saqueDTO.idConta() + " não foi encontrada."));
 
         BigDecimal saldoAtual = conta.getSaldo();
         if (saldoAtual.compareTo(saqueDTO.valor()) < 0) {
