@@ -1,8 +1,11 @@
 package com.simplicity.wallet.digital.SimplicityDigitalWallet.entity;
 
+import com.simplicity.wallet.digital.SimplicityDigitalWallet.enums.Pago;
+import com.simplicity.wallet.digital.SimplicityDigitalWallet.enums.TipoTransacao;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Type;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -27,8 +30,10 @@ public class Deposito {
     @Column(name = "data_transacao")
     private Timestamp dataTransacao;
 
-    @Lob
-    @Column(name = "tipo", nullable = false)
-    private String tipo;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "pago", nullable = false)
+    private Pago pago;
+
 
 }
