@@ -21,10 +21,10 @@ public class Deposito {
     private BigDecimal valor;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "idConta")
+    @JoinColumn(name = "id_conta")
     private Conta idConta;
 
-    @Column(name = "dataTransacao")
+    @Column(name = "data_transacao")
     private Timestamp dataTransacao;
 
     @Lob

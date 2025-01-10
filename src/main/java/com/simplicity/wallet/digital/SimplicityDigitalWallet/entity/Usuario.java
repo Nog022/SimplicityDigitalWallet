@@ -33,17 +33,17 @@ public class Usuario implements UserDetails {
     @Column(name = "senha", nullable = false, length = 100)
     private String senha;
 
-    @Column(name = "dataNascimento")
+    @Column(name = "data_nascimento")
     private LocalDate dataNascimento;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
-    @JoinColumn(name = "idEndereco")
+    @JoinColumn(name = "id_endereco")
     private Endereco idEndereco;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
-    @JoinColumn(name = "idContato")
+    @JoinColumn(name = "id_contato")
     private Contato idContato;
 
     @Enumerated(EnumType.STRING)

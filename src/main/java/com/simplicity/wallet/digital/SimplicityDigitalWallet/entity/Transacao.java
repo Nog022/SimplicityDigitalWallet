@@ -17,18 +17,18 @@ public class Transacao {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "dataTransacao")
+    @Column(name = "data_transacao")
     private Timestamp dataTransacao;
 
     @Column(name = "valor", precision = 15, scale = 2)
     private BigDecimal valor;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "idContaOrigem")
+    @JoinColumn(name = "id_conta_origem")
     private Conta idContaOrigem;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "idContaDestino")
+    @JoinColumn(name = "id_conta_destino")
     private Conta idContaDestino;
 
 }

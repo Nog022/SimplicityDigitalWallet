@@ -17,17 +17,17 @@ public class Conta {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "numeroConta")
+    @Column(name = "numero_conta")
     private Long numeroConta;
 
     @Column(name = "saldo", precision = 15, scale = 2)
     private BigDecimal saldo;
 
-    @Column(name = "dataCriacao")
+    @Column(name = "data_criacao")
     private Timestamp dataCriacao;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "idUsuario", nullable = false)
+    @JoinColumn(name = "id_usuario", nullable = false)
     private Usuario idUsuario;
 
 }
