@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 @Data
 @NoArgsConstructor
@@ -18,6 +19,9 @@ public class Saque {
 
     @Column(name = "valor", precision = 15, scale = 2)
     private BigDecimal valor;
+
+    @Column(name = "dataSaque")
+    private Timestamp dataSaque;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idConta")
