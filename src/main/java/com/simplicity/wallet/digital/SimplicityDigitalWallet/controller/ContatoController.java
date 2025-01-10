@@ -1,11 +1,8 @@
 package com.simplicity.wallet.digital.SimplicityDigitalWallet.controller;
 
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.dto.AtualizarContatoDTO;
-import com.simplicity.wallet.digital.SimplicityDigitalWallet.dto.AtualizarEnderecoDTO;
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.dto.ContatoDTO;
-import com.simplicity.wallet.digital.SimplicityDigitalWallet.dto.EnderecoDTO;
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.entity.Contato;
-import com.simplicity.wallet.digital.SimplicityDigitalWallet.entity.Endereco;
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.service.ContatoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

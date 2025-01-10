@@ -1,5 +1,6 @@
 package com.simplicity.wallet.digital.SimplicityDigitalWallet.entity;
 
+import com.simplicity.wallet.digital.SimplicityDigitalWallet.enums.TipoTransacao;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -30,5 +31,8 @@ public class Transacao {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idContaDestino")
     private Conta idContaDestino;
+
+    @Enumerated(EnumType.STRING)
+    private TipoTransacao tipoTransacao;
 
 }
