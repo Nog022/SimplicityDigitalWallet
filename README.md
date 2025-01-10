@@ -50,10 +50,12 @@ SimplicityDigitalWallet/
 ```
 ## Ferramentas e Frameworks utilizados no Back-End
 
-<img align="center" alt="Java" height="30" width="40" src="https://github.com/devicons/devicon/blob/master/icons/java/java-original.svg">  
-<img align="center" alt="SpringBoot" height="70" width="70" src="https://raw.githubusercontent.com/devicons/devicon/1119b9f84c0290e0f0b38982099a2bd027a48bf1/icons/spring/spring-original-wordmark.svg">
-<img align="center" alt="MYSQL" height="60" width="60" src= https://raw.githubusercontent.com/devicons/devicon/1119b9f84c0290e0f0b38982099a2bd027a48bf1/icons/mysql/mysql-original.svg>
-<img align="center" alt="jwt" height="50" width="50" src="https://img.icons8.com/?size=512&id=rHpveptSuwDz&format=png">
+<div style="display: inline_block">
+    <img align="center" alt="Java" height="30" width="40" src="https://github.com/devicons/devicon/blob/master/icons/java/java-original.svg">  
+    <img align="center" alt="SpringBoot" height="70" width="70" src="https://raw.githubusercontent.com/devicons/devicon/1119b9f84c0290e0f0b38982099a2bd027a48bf1/icons/spring/spring-original-wordmark.svg">
+    <img align="center" alt="MYSQL" height="60" width="60" src= https://raw.githubusercontent.com/devicons/devicon/1119b9f84c0290e0f0b38982099a2bd027a48bf1/icons/mysql/mysql-original.svg>
+    <img align="center" alt="jwt" height="50" width="50" src="https://img.icons8.com/?size=512&id=rHpveptSuwDz&format=png">
+</div>
 
 ## Execute o Projeto
 
