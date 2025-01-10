@@ -20,11 +20,11 @@ public class Saque {
     @Column(name = "valor", precision = 15, scale = 2)
     private BigDecimal valor;
 
-    @Column(name = "dataSaque")
+    @Column(name = "data_saque")
     private Timestamp dataSaque;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "idConta")
+    @JoinColumn(name = "id_conta")
     private Conta idConta;
 
 }
