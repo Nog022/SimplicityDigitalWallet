@@ -54,7 +54,7 @@ public class PixServiceImpl implements PixService {
             contaRepository.save(contaDestino);
             contaRepository.save(contaOrgiem);
 
-            transacaoService.transacaoPix(contaOrgiem,contaDestino,pix.valor());
+            transacaoService.transacao(contaOrgiem,contaDestino,pix.valor());
 
             return "Transferencia Pix realizada com sucesso!";
         }

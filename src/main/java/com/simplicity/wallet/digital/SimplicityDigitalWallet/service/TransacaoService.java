@@ -10,6 +10,6 @@ import java.math.BigDecimal;
 @Service
 public interface TransacaoService {
 
-    void transacaoDeposito(Deposito deposito);
-    void transacaoPix(Conta contaOrigem, Conta contaDestino, BigDecimal valor);
+    void transacao(Deposito deposito);
+    void transacao(Conta contaOrigem, Conta contaDestino, BigDecimal valor);
 }

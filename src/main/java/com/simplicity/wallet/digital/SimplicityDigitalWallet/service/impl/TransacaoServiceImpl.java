@@ -20,7 +20,7 @@ public class TransacaoServiceImpl implements TransacaoService {
     private TransacaoRepository transacaoRepository;
 
     @Override
-    public void transacaoDeposito(Deposito deposito) {
+    public void transacao(Deposito deposito) {
         Transacao transacao = new Transacao();
         transacao.setValor(deposito.getValor());
         transacao.setDataTransacao(deposito.getDataTransacao());
@@ -31,7 +31,7 @@ public class TransacaoServiceImpl implements TransacaoService {
     }
 
     @Override
-    public void transacaoPix(Conta contaOrigem, Conta contaDestino, BigDecimal valor) {
+    public void transacao(Conta contaOrigem, Conta contaDestino, BigDecimal valor) {
         Transacao transacao = new Transacao();
         transacao.setValor(valor);
         transacao.setIdContaOrigem(contaOrigem);
