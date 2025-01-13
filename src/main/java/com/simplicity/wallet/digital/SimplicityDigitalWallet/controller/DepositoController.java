@@ -1,10 +1,12 @@
 package com.simplicity.wallet.digital.SimplicityDigitalWallet.controller;
 
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.dto.DepositoDTO;
+import com.simplicity.wallet.digital.SimplicityDigitalWallet.dto.DepositoResponseDTO;
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.dto.PagarBoletoDTO;
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.entity.Deposito;
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.service.DepositoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,14 +20,14 @@ public class DepositoController {
     private DepositoService depositoService;
 
     @PostMapping("/gerarBoleto")
-    public String gerarBoleto(@RequestBody DepositoDTO deposito) {
-        return depositoService.gerarBoleto(deposito);
+    public ResponseEntity<DepositoResponseDTO> gerarBoleto(@RequestBody DepositoDTO deposito) {
+        return ResponseEntity.ok(new DepositoResponseDTO(depositoService.gerarBoleto(deposito)));
 
     }
 
     @PostMapping("/pagarBoleto")
-    public String pagarBoleto(@RequestBody PagarBoletoDTO pagarBoletoDTO) {
-        return depositoService.pagarBoleto(pagarBoletoDTO);
+    public ResponseEntity<DepositoResponseDTO> pagarBoleto(@RequestBody PagarBoletoDTO pagarBoletoDTO) {
+        return ResponseEntity.ok(new DepositoResponseDTO(depositoService.pagarBoleto(pagarBoletoDTO)));
 
     }
 }

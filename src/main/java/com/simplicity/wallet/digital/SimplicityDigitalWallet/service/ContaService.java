@@ -11,4 +11,5 @@ public interface ContaService {
     void deletarConta(Long numeroConta);
     BigDecimal buscarSaldoConta(Long id);
     void atualizarSaldoConta(Long numeroConta, BigDecimal valor, boolean isSaida);
+    Conta buscarConta(Long numeroConta);
 }

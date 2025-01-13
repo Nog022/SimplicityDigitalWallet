@@ -7,7 +7,9 @@ import com.simplicity.wallet.digital.SimplicityDigitalWallet.exceptions.ContaNao
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.repository.ContaRepository;
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.repository.UsuarioRepository;
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.service.ContaService;
+import com.simplicity.wallet.digital.SimplicityDigitalWallet.service.PixService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -24,6 +26,10 @@ public class ContaServiceImpl implements ContaService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    @Autowired
+    @Lazy
+    private PixService pixService;
+
     private final SecureRandom random = new SecureRandom();
 
     @Override
@@ -34,11 +40,15 @@ public class ContaServiceImpl implements ContaService {
         Conta novaConta = new Conta();
 
         novaConta.setNumeroConta(gerarNumeroConta());
+
         novaConta.setSaldo(BigDecimal.ZERO);
         novaConta.setDataCriacao(Timestamp.from(Instant.now()));
         novaConta.setIdUsuario(usuario);
+        contaRepository.save(novaConta);
 
+        novaConta.setChavePix(pixService.criarPix(novaConta));
         return contaRepository.save(novaConta);
+
     }
 
     @Override
@@ -59,6 +69,13 @@ public class ContaServiceImpl implements ContaService {
         Conta conta = contaRepository.findByNumeroConta(numeroConta)
                 .orElseThrow(() -> new ContaNaoEncontradaException("Conta com número " + numeroConta + " não encontrada."));
         return conta.getSaldo();
+    }
+
+    @Override
+    public Conta buscarConta(Long numeroConta) {
+        return contaRepository.findByNumeroConta(numeroConta)
+                .orElseThrow(() -> new ContaNaoEncontradaException("Conta com número " + numeroConta + " não encontrada."));
+
     }
 
     @Override
@@ -83,4 +100,6 @@ public class ContaServiceImpl implements ContaService {
         } while (contaRepository.findByNumeroConta(numeroConta).isPresent());
         return numeroConta;
     }
+
+
 }

@@ -30,4 +30,8 @@ public class Conta {
     @JoinColumn(name = "id_usuario", nullable = false)
     private Usuario idUsuario;
 
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "chave_pix_id")
+    private Pix chavePix;
+
 }
