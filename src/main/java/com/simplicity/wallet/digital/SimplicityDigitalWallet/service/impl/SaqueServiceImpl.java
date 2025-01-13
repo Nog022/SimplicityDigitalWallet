@@ -3,14 +3,19 @@ package com.simplicity.wallet.digital.SimplicityDigitalWallet.service.impl;
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.dto.SaqueDTO;
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.entity.Conta;
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.entity.Saque;
+import com.simplicity.wallet.digital.SimplicityDigitalWallet.entity.Transacao;
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.exceptions.ContaNaoEncontradaException;
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.repository.ContaRepository;
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.repository.SaqueRepository;
+import com.simplicity.wallet.digital.SimplicityDigitalWallet.repository.TransacaoRepository;
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.service.SaqueService;
+import com.simplicity.wallet.digital.SimplicityDigitalWallet.service.TransacaoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.time.Instant;
 
 @Service
 public class SaqueServiceImpl implements SaqueService {
@@ -21,8 +26,11 @@ public class SaqueServiceImpl implements SaqueService {
     @Autowired
     private ContaRepository contaRepository;
 
+    @Autowired
+    private TransacaoService transacaoService;
+
     @Override
-    public void realizarSaque(SaqueDTO saqueDTO) {
+    public String realizarSaque(SaqueDTO saqueDTO) {
         if (saqueDTO.valor().compareTo(BigDecimal.ZERO) <= 0) {
             throw new IllegalArgumentException("O valor do saque deve ser maior que zero.");
         }
@@ -39,8 +47,12 @@ public class SaqueServiceImpl implements SaqueService {
 
         Saque saque = new Saque();
         saque.setValor(saqueDTO.valor());
-        saque.setDataSaque(saqueDTO.dataSaque());
+        saque.setDataSaque(Timestamp.from(Instant.now()));
         saque.setIdConta(conta);
         saqueRepository.save(saque);
+
+        transacaoService.transacao(saque);
+
+        return "Saque realizado com sucesso!";
     }
 }

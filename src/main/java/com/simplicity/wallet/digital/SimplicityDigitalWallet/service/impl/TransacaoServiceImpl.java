@@ -2,6 +2,7 @@ package com.simplicity.wallet.digital.SimplicityDigitalWallet.service.impl;
 
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.entity.Conta;
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.entity.Deposito;
+import com.simplicity.wallet.digital.SimplicityDigitalWallet.entity.Saque;
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.entity.Transacao;
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.enums.TipoTransacao;
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.repository.TransacaoRepository;
@@ -18,6 +19,17 @@ public class TransacaoServiceImpl implements TransacaoService {
 
     @Autowired
     private TransacaoRepository transacaoRepository;
+
+    @Override
+    public void transacao(Saque saque) {
+        Transacao transacao = new Transacao();
+        transacao.setValor(saque.getValor());
+        transacao.setDataTransacao(Timestamp.from(Instant.now()));
+        transacao.setTipoTransacao(TipoTransacao.SAQUE);
+        transacao.setIdContaOrigem(saque.getIdConta());
+        transacao.setIdContaDestino(null);
+        transacaoRepository.save(transacao);
+    }
 
     @Override
     public void transacao(Deposito deposito) {
