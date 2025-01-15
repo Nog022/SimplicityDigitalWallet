@@ -48,7 +48,7 @@ public class DepositoServiceImpl implements DepositoService {
             contaRepository.save(conta);
             Deposito deposito = findDepositoByNumeroConta(conta,pagarBoletoDTO.valor());
 
-            transacaoService.transacaoDeposito(deposito);
+            transacaoService.transacao(deposito);
 
 
             return "O valor foi depositado com sucesso!";
