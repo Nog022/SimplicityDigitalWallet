@@ -17,7 +17,10 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.nio.ByteBuffer;
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.Base64;
+import java.util.Random;
 
 @Service
 public class DepositoServiceImpl implements DepositoService {
@@ -27,7 +30,6 @@ public class DepositoServiceImpl implements DepositoService {
     @Autowired
     private DepositoRepository depositoRepository;
 
-
     @Autowired
     private ContaRepository contaRepository;
 
@@ -36,22 +38,30 @@ public class DepositoServiceImpl implements DepositoService {
 
     @Override
     public String pagarBoleto(PagarBoletoDTO pagarBoletoDTO) {
-        Long decode = decodeBase64ToLong(pagarBoletoDTO.boleto());
-        Conta conta = findContaByNumeroConta(decode);
+        Deposito deposito =  procurarDeposito(pagarBoletoDTO.boleto());
+        Conta contaEncontrada = findContaByNumeroConta(pagarBoletoDTO.numeroConta());
 
-        if(conta != null){
-            BigDecimal valor1 = new BigDecimal(String.valueOf(pagarBoletoDTO.valor()));
-            BigDecimal valor2 = new BigDecimal(String.valueOf(conta.getSaldo()));
-            BigDecimal soma = valor1.add(valor2);
+        if(deposito != null && contaEncontrada.getSaldo().compareTo(deposito.getValor()) >= 0) {
+            if(deposito.getPago() != Pago.TRUE){
+                //pegar o valor do boleto e depositar na conta que está no deposito
+                BigDecimal valorBoleto = somarValores(deposito.getValor(), deposito.getIdConta());
+                deposito.getIdConta().setSaldo(valorBoleto);
+                deposito.setPago(Pago.TRUE);
+                depositoRepository.save(deposito);
 
-            conta.setSaldo(soma);
-            contaRepository.save(conta);
-            Deposito deposito = findDepositoByNumeroConta(conta,pagarBoletoDTO.valor());
+                //retirando valor da conta que vai pagar o boleto
+                contaEncontrada.setSaldo(contaEncontrada.getSaldo().subtract(deposito.getValor()));
+                contaRepository.save(contaEncontrada);
 
-            transacaoService.transacao(deposito);
+                transacaoService.transacao(deposito,contaEncontrada);
 
 
-            return "O valor foi depositado com sucesso!";
+                return "O valor foi depositado com sucesso!";
+
+            }else{
+                return "Esse boleto ja foi pago anteriormente";
+            }
+
         }
 
         return "Erro ao depositar boleto!";
@@ -61,46 +71,48 @@ public class DepositoServiceImpl implements DepositoService {
 
     @Override
     public String gerarBoleto(DepositoDTO dto) {
-        //TODO criar um timer para pagamento do boleto, colocar para a data ser colocada diretamente no codigo
-        if(salvarDeposito(dto)){
-            String encode = encodeLongToBase64(dto.idConta().getNumeroConta());
-
-            logger.info("boleto gerado: {}", encode);
-
-            return encode;
+        String boleto = salvarDeposito(dto);
+        if(boleto !=null){
+            logger.info("Boleto gerado: {}", boleto);
+            return boleto;
         }
         logger.error("Erro ao salvar depósito");
-        return null;
+        return "Erro ao salvar depósito";
 
     }
 
+    private BigDecimal somarValores(BigDecimal valorDoBoleto, Conta conta) {
+        BigDecimal valorBoleto = new BigDecimal(String.valueOf(valorDoBoleto));
+        BigDecimal saldoConta = new BigDecimal(String.valueOf(conta.getSaldo()));
+        return valorBoleto.add(saldoConta);
+    }
 
-    private boolean salvarDeposito(DepositoDTO dto) {
+
+    private String salvarDeposito(DepositoDTO dto) {
         Deposito deposito = new Deposito();
+        deposito.setBoleto(gerarCodigoBarras());
         deposito.setPago(Pago.FALSE);
         deposito.setValor(dto.valor());
-        deposito.setIdConta(findContaByNumeroConta(dto.idConta()));
-        deposito.setDataTransacao(dto.dataTransacao());
+        deposito.setIdConta(findContaByNumeroConta(dto.numeroConta()));
+        deposito.setDataTransacao(Timestamp.from(Instant.now()));
         depositoRepository.save(deposito);
-        return true;
+        return deposito.getBoleto();
 
     }
 
 
-    // Método para codificar Long em Base64
-    public static String encodeLongToBase64(long value) {
-        ByteBuffer buffer = ByteBuffer.allocate(Long.BYTES);
-        buffer.putLong(value);
-        return Base64.getEncoder().encodeToString(buffer.array());
+    private static String gerarCodigoBarras() {
+        Random random = new Random();
+        StringBuilder codigo = new StringBuilder();
+        for (int i = 0; i < 44; i++) { // Gera 44 dígitos
+            codigo.append(random.nextInt(10)); // Adiciona um número de 0 a 9
+        }
+        return codigo.toString();
     }
 
-    // Método para decodificar Base64 para Long
-    public static Long decodeBase64ToLong(String base64) {
-        byte[] bytes = Base64.getDecoder().decode(base64);
-        ByteBuffer buffer = ByteBuffer.wrap(bytes);
-        return buffer.getLong();
+    private Deposito procurarDeposito(String boleto) {
+        return depositoRepository.findDepositoByBoleto(boleto);
     }
-
 
     private Conta findContaByNumeroConta(Conta conta) {
         return contaRepository.findByNumeroConta(conta.getNumeroConta())
