@@ -15,7 +15,7 @@ public interface ContatoService {
     void deletar(Long id);
 
     Contato atualizarContato(AtualizarContatoDTO contatoDTO);
-
+    Contato atualizarContato(Contato contato);
 
     Contato contatoById(Long id);
 

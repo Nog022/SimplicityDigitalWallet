@@ -13,4 +13,6 @@ public interface EnderecoService {
     Endereco atualizarEndereco(AtualizarEnderecoDTO endereco);
 
     Endereco enderecoById(Long id);
+
+    Endereco atualizarEndereco(Endereco endereco);
 }
