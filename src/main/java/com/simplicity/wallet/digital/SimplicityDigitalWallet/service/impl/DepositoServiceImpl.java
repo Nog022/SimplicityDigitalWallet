@@ -2,6 +2,7 @@ package com.simplicity.wallet.digital.SimplicityDigitalWallet.service.impl;
 
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.dto.DepositoDTO;
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.dto.PagarBoletoDTO;
+import com.simplicity.wallet.digital.SimplicityDigitalWallet.dto.PagarBoletoViaContaDTO;
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.entity.Conta;
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.entity.Deposito;
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.enums.Pago;
@@ -16,10 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.nio.ByteBuffer;
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.util.Base64;
 import java.util.Random;
 
 @Service
@@ -37,19 +36,19 @@ public class DepositoServiceImpl implements DepositoService {
     private TransacaoService transacaoService;
 
     @Override
-    public String pagarBoleto(PagarBoletoDTO pagarBoletoDTO) {
-        Deposito deposito =  procurarDeposito(pagarBoletoDTO.boleto());
-        Conta contaEncontrada = findContaByNumeroConta(pagarBoletoDTO.numeroConta());
+    public String pagarBoletoViaConta(PagarBoletoViaContaDTO pagarBoletoViaContaDTO) {
+        Deposito deposito =  procurarDeposito(pagarBoletoViaContaDTO.boleto());
+        Conta contaEncontrada = findContaByNumeroConta(pagarBoletoViaContaDTO.numeroConta());
 
         if(deposito != null && contaEncontrada.getSaldo().compareTo(deposito.getValor()) >= 0) {
             if(deposito.getPago() != Pago.TRUE){
-                //pegar o valor do boleto e depositar na conta que está no deposito
+
                 BigDecimal valorBoleto = somarValores(deposito.getValor(), deposito.getIdConta());
                 deposito.getIdConta().setSaldo(valorBoleto);
                 deposito.setPago(Pago.TRUE);
                 depositoRepository.save(deposito);
 
-                //retirando valor da conta que vai pagar o boleto
+
                 contaEncontrada.setSaldo(contaEncontrada.getSaldo().subtract(deposito.getValor()));
                 contaRepository.save(contaEncontrada);
 
@@ -62,6 +61,27 @@ public class DepositoServiceImpl implements DepositoService {
                 return "Esse boleto ja foi pago anteriormente";
             }
 
+        }
+
+        return "Erro ao depositar boleto!";
+
+
+    }
+
+    public String pagarBoleto(PagarBoletoDTO pagarBoletoDTO) {
+        Deposito deposito =  procurarDeposito(pagarBoletoDTO.boleto());
+        if(deposito != null){
+            Conta conta = deposito.getIdConta();
+            BigDecimal valorBoleto = somarValores(deposito.getValor(), conta);
+            conta.setSaldo(valorBoleto);
+            contaRepository.save(conta);
+            deposito.setPago(Pago.TRUE);
+            depositoRepository.save(deposito);
+
+            transacaoService.transacao(deposito);
+
+
+            return "O valor foi depositado com sucesso!";
         }
 
         return "Erro ao depositar boleto!";

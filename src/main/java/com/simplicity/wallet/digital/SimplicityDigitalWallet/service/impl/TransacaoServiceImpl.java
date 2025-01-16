@@ -52,4 +52,15 @@ public class TransacaoServiceImpl implements TransacaoService {
         transacao.setDataTransacao(Timestamp.from(Instant.now()));
         transacaoRepository.save(transacao);
     }
+
+    @Override
+    public void transacao(Deposito deposito) {
+        Transacao transacao = new Transacao();
+        transacao.setValor(deposito.getValor());
+        transacao.setDataTransacao(deposito.getDataTransacao());
+        transacao.setTipoTransacao(TipoTransacao.DEPOSITO);
+        transacao.setIdContaOrigem(deposito.getIdConta());
+        transacao.setIdContaDestino(null);
+        transacaoRepository.save(transacao);
+    }
 }

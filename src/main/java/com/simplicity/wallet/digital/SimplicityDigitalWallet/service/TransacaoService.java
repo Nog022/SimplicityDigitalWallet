@@ -13,5 +13,6 @@ public interface TransacaoService {
 
     void transacao(Saque saque);
     void transacao(Deposito deposito, Conta contaEncontrada);
+    void transacao(Deposito deposito);
     void transacao(Conta contaOrigem, Conta contaDestino, BigDecimal valor);
 }

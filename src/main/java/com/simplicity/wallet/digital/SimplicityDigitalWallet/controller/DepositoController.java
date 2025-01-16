@@ -3,7 +3,7 @@ package com.simplicity.wallet.digital.SimplicityDigitalWallet.controller;
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.dto.DepositoDTO;
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.dto.DepositoResponseDTO;
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.dto.PagarBoletoDTO;
-import com.simplicity.wallet.digital.SimplicityDigitalWallet.entity.Deposito;
+import com.simplicity.wallet.digital.SimplicityDigitalWallet.dto.PagarBoletoViaContaDTO;
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.service.DepositoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -25,8 +25,14 @@ public class DepositoController {
 
     }
 
+    @PostMapping("/pagarBoletoViaConta")
+    public ResponseEntity<DepositoResponseDTO> pagarBoletoViaConta(@RequestBody PagarBoletoViaContaDTO pagarBoletoViaContaDTO) {
+        return ResponseEntity.ok(new DepositoResponseDTO(depositoService.pagarBoletoViaConta(pagarBoletoViaContaDTO)));
+
+    }
+
     @PostMapping("/pagarBoleto")
-    public ResponseEntity<DepositoResponseDTO> pagarBoleto(@RequestBody PagarBoletoDTO pagarBoletoDTO) {
+    public ResponseEntity<DepositoResponseDTO> pagarBoleto(@RequestBody PagarBoletoDTO  pagarBoletoDTO) {
         return ResponseEntity.ok(new DepositoResponseDTO(depositoService.pagarBoleto(pagarBoletoDTO)));
 
     }
