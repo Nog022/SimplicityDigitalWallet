@@ -1,5 +1,6 @@
 package com.simplicity.wallet.digital.SimplicityDigitalWallet.service.impl;
 
+import com.simplicity.wallet.digital.SimplicityDigitalWallet.config.SecurityConfiguration;
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.dto.ContaDTO;
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.entity.Conta;
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.entity.Usuario;
@@ -8,6 +9,8 @@ import com.simplicity.wallet.digital.SimplicityDigitalWallet.repository.ContaRep
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.repository.UsuarioRepository;
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.service.ContaService;
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.service.PixService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -19,6 +22,9 @@ import java.time.Instant;
 
 @Service
 public class ContaServiceImpl implements ContaService {
+
+    public static Logger logger = LoggerFactory.getLogger(ContaServiceImpl.class);
+
 
     @Autowired
     private ContaRepository contaRepository;
@@ -43,7 +49,7 @@ public class ContaServiceImpl implements ContaService {
 
         novaConta.setSaldo(BigDecimal.ZERO);
         novaConta.setDataCriacao(Timestamp.from(Instant.now()));
-        novaConta.setIdUsuario(usuario);
+        novaConta.setUsuario(usuario);
         contaRepository.save(novaConta);
 
         novaConta.setChavePix(pixService.criarPix(novaConta));

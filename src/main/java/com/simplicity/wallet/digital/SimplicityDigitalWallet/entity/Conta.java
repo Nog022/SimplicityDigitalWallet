@@ -2,12 +2,15 @@ package com.simplicity.wallet.digital.SimplicityDigitalWallet.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @Entity
 @Table(name = "conta", schema = "simplicity_digital_db")
@@ -28,10 +31,12 @@ public class Conta {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_usuario", nullable = false)
-    private Usuario idUsuario;
+    private Usuario usuario;
 
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "chave_pix_id")
     private Pix chavePix;
+
+    
 
 }

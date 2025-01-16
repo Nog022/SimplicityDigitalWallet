@@ -36,13 +36,11 @@ public class Usuario implements UserDetails {
     @Column(name = "data_nascimento")
     private LocalDate dataNascimento;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnore
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_endereco")
     private Endereco idEndereco;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnore
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_contato")
     private Contato idContato;
 
@@ -62,37 +60,44 @@ public class Usuario implements UserDetails {
 //UserDetails
 
     @Override
+    @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(() -> "ROLE_" + this.role.name());
     }
 
 
     @Override
+    @JsonIgnore
     public String getUsername() {
         return this.cpf;
     }
 
     @Override
+    @JsonIgnore
     public String getPassword() {
         return senha;
     }
 
     @Override
+    @JsonIgnore
     public boolean isAccountNonExpired() {
         return UserDetails.super.isAccountNonExpired();
     }
 
     @Override
+    @JsonIgnore
     public boolean isAccountNonLocked() {
         return UserDetails.super.isAccountNonLocked();
     }
 
     @Override
+    @JsonIgnore
     public boolean isCredentialsNonExpired() {
         return UserDetails.super.isCredentialsNonExpired();
     }
 
     @Override
+    @JsonIgnore
     public boolean isEnabled() {
         return UserDetails.super.isEnabled();
     }
