@@ -19,6 +19,7 @@ import java.math.BigDecimal;
 import java.security.SecureRandom;
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.List;
 
 @Service
 public class ContaServiceImpl implements ContaService {
@@ -40,8 +41,8 @@ public class ContaServiceImpl implements ContaService {
 
     @Override
     public Conta salvarConta(ContaDTO contaDto) {
-        Usuario usuario = usuarioRepository.findByCpf(String.valueOf(contaDto.idUsuario()))
-                .orElseThrow(() -> new IllegalArgumentException("Usuário com CPF " + contaDto.idUsuario() + " não encontrado."));
+        Usuario usuario = usuarioRepository.findByCpf(String.valueOf(contaDto.cpf()))
+                .orElseThrow(() -> new IllegalArgumentException("Usuário com CPF " + contaDto.cpf() + " não encontrado."));
 
         Conta novaConta = new Conta();
 
@@ -82,6 +83,11 @@ public class ContaServiceImpl implements ContaService {
         return contaRepository.findByNumeroConta(numeroConta)
                 .orElseThrow(() -> new ContaNaoEncontradaException("Conta com número " + numeroConta + " não encontrada."));
 
+    }
+
+    @Override
+    public List<Conta> findByUsuario_Id(Long id) {
+        return contaRepository.findByUsuario_Id(id);
     }
 
     @Override
