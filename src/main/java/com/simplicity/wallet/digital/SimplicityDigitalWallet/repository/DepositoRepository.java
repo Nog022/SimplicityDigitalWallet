@@ -16,4 +16,7 @@ public interface DepositoRepository extends CrudRepository<Deposito, Long> {
 
     @Query("SELECT d FROM Deposito d WHERE d.idConta.id = :idConta AND d.pago = :pago AND d.valor = :valor")
     Deposito findDepositoByIdContaAndPagoAndValor(@Param("idConta") Long idConta, @Param("pago") Pago pago, @Param("valor") BigDecimal valor);
+
+
+    Deposito findDepositoByBoleto(String boleto);
 }

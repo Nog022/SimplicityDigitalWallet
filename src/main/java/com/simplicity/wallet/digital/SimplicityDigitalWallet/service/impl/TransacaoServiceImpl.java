@@ -32,13 +32,13 @@ public class TransacaoServiceImpl implements TransacaoService {
     }
 
     @Override
-    public void transacao(Deposito deposito) {
+    public void transacao(Deposito deposito, Conta conta) {
         Transacao transacao = new Transacao();
         transacao.setValor(deposito.getValor());
         transacao.setDataTransacao(deposito.getDataTransacao());
         transacao.setTipoTransacao(TipoTransacao.DEPOSITO);
-        transacao.setIdContaOrigem(deposito.getIdConta());
-        transacao.setIdContaDestino(null);
+        transacao.setIdContaOrigem(conta);
+        transacao.setIdContaDestino(deposito.getIdConta());
         transacaoRepository.save(transacao);
     }
 
@@ -50,6 +50,17 @@ public class TransacaoServiceImpl implements TransacaoService {
         transacao.setIdContaDestino(contaDestino);
         transacao.setTipoTransacao(TipoTransacao.PIX);
         transacao.setDataTransacao(Timestamp.from(Instant.now()));
+        transacaoRepository.save(transacao);
+    }
+
+    @Override
+    public void transacao(Deposito deposito) {
+        Transacao transacao = new Transacao();
+        transacao.setValor(deposito.getValor());
+        transacao.setDataTransacao(deposito.getDataTransacao());
+        transacao.setTipoTransacao(TipoTransacao.DEPOSITO);
+        transacao.setIdContaOrigem(deposito.getIdConta());
+        transacao.setIdContaDestino(null);
         transacaoRepository.save(transacao);
     }
 }
