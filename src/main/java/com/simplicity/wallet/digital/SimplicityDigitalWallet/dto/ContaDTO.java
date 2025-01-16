@@ -4,9 +4,6 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 public record ContaDTO(
-        Long numeroConta,
-        BigDecimal saldo,
-        Timestamp dataCriacao,
-        String idUsuario
+        String cpf
 ) {
 }

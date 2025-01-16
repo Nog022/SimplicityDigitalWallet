@@ -4,12 +4,15 @@ import com.simplicity.wallet.digital.SimplicityDigitalWallet.config.TokenService
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.dto.AuthorizationDTO;
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.dto.LoginResponseDTO;
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.dto.RegisterDTO;
+import com.simplicity.wallet.digital.SimplicityDigitalWallet.entity.Conta;
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.entity.Contato;
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.entity.Endereco;
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.entity.Usuario;
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.repository.ContatoRepository;
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.repository.EnderecoRepository;
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.repository.UsuarioRepository;
+import com.simplicity.wallet.digital.SimplicityDigitalWallet.service.ContaService;
+import com.simplicity.wallet.digital.SimplicityDigitalWallet.service.UsuarioService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +27,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RequestMapping("/auth")
 @RestController
@@ -42,6 +47,12 @@ public class AuthorizationController {
 
     @Autowired
     private EnderecoRepository enderecoRepository;
+
+    @Autowired
+    private UsuarioService usuarioService;
+
+    @Autowired
+    private ContaService contaService;
 
 
     @Autowired
@@ -69,8 +80,11 @@ public class AuthorizationController {
             var token = tokenService.generateToken(usuario);
             logger.info("Token JWT gerado com sucesso");
 
+            Usuario usuarioEncontrado = usuarioService.usuarioByCpf(data.cpf());
+            List<Conta> contaEncontrada = contaService.findByUsuario_Id(usuarioEncontrado.getId());
 
-            return ResponseEntity.ok(new LoginResponseDTO(token, data.cpf()));
+
+            return ResponseEntity.ok(new LoginResponseDTO(token, contaEncontrada));
         } catch (Exception e) {
             logger.error("Erro durante o login: {}", e.getMessage(), e);
 
