@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -50,7 +51,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
         if (dto.usuario().getCpf() != null) usuarioExistente.setCpf(dto.usuario().getCpf());
         if (dto.usuario().getNome() != null) usuarioExistente.setNome(dto.usuario().getNome());
-        if (dto.usuario().getSenha() != null) usuarioExistente.setSenha(dto.usuario().getSenha());
+        if (dto.usuario().getSenha() != null) usuarioExistente.setSenha(new BCryptPasswordEncoder().encode(dto.usuario().getSenha()));
 
 
         Contato contato = dto.usuario().getIdContato() != null
