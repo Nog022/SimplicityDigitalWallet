@@ -44,7 +44,7 @@ public class PixServiceImpl implements PixService {
 
     @Override
     public String transferenciaPix(PixDTO pix) {
-        Conta contaDestino =  findByPix(pix.chavePix());
+        Conta contaDestino =  findContaByPix(pix.chavePix());
         Conta contaOrgiem = contaService.buscarConta(pix.numeroContaOrigem()) ;
 
 
@@ -80,14 +80,11 @@ public class PixServiceImpl implements PixService {
     private boolean verificarSaldo(Conta conta, BigDecimal valor) {
         return conta.getSaldo().compareTo(valor) >= 0;
     }
-
-    public Conta findByPix(String chavePix) {
+    @Override
+    public Conta findContaByPix(String chavePix) {
         Pix pix =  pixRepository.findById(chavePix)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Conta não encontrado"));
 
         return pix.getConta();
-
-
-
     }
 }

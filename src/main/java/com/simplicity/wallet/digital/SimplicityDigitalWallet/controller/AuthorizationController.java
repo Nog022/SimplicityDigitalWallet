@@ -70,11 +70,11 @@ public class AuthorizationController {
             logger.info("Token JWT gerado com sucesso");
 
 
-            return ResponseEntity.ok(new LoginResponseDTO(token));
+            return ResponseEntity.ok(new LoginResponseDTO(token, data.cpf()));
         } catch (Exception e) {
             logger.error("Erro durante o login: {}", e.getMessage(), e);
 
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new LoginResponseDTO("Erro durante o login: " + e.getMessage()));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new LoginResponseDTO("Erro durante o login: " + e.getMessage(), null));
         }
     }
 

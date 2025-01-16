@@ -2,9 +2,10 @@ package com.simplicity.wallet.digital.SimplicityDigitalWallet.service;
 
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.dto.ContaDTO;
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.entity.Conta;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-
+@Service
 public interface ContaService {
     Conta salvarConta(ContaDTO conta);
     Conta buscarContaPorId(Long id);

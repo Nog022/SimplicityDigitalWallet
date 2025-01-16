@@ -11,4 +11,6 @@ public interface PixService {
     Pix criarPix(Conta conta);
 
     String transferenciaPix(PixDTO pix);
+
+    Conta findContaByPix(String chavePix);
 }

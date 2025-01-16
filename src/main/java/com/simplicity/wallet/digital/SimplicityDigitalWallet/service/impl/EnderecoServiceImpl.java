@@ -59,6 +59,24 @@ public class EnderecoServiceImpl implements EnderecoService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Endereço não encontrado"));
     }
 
+    public Endereco atualizarEndereco(Endereco endereco) {
+        return enderecoRepository.findById(endereco.getId())
+                .map(enderecoEncontrado -> {
+
+                    if (endereco.getRua() != null) enderecoEncontrado.setRua(endereco.getRua());
+                    if (endereco.getNumero() != null) enderecoEncontrado.setNumero(endereco.getNumero());
+                    if (endereco.getComplemento() != null) enderecoEncontrado.setComplemento(endereco.getComplemento());
+                    if (endereco.getBairro() != null) enderecoEncontrado.setBairro(endereco.getBairro());
+                    if (endereco.getCidade() != null) enderecoEncontrado.setCidade(endereco.getCidade());
+                    if (endereco.getUf() != null) enderecoEncontrado.setUf(endereco.getUf());
+                    if (endereco.getCep() != null) enderecoEncontrado.setCep(endereco.getCep());
+
+
+                    return enderecoRepository.save(enderecoEncontrado);
+                })
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Endereço não encontrado"));
+    }
+
     @Override
     public Endereco enderecoById(Long id) {
         return enderecoRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Endereço não encontrado"));

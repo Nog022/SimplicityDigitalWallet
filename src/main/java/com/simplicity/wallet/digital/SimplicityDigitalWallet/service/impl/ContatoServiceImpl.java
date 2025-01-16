@@ -45,7 +45,20 @@ public class ContatoServiceImpl implements ContatoService {
                     if (contatoDTO.telefone() != null) contatoEncontrado.setTelefone(contatoDTO.telefone());
                     return contatoRepository.save(contatoEncontrado);
                 })
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Endereço não encontrado"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Contato não encontrado"));
+
+    }
+
+    @Override
+    public Contato atualizarContato(Contato contato) {
+        return contatoRepository.findById(contato.getId())
+                .map(contatoEncontrado -> {
+                    if (contato.getDdd() != null) contatoEncontrado.setDdd(contato.getDdd());
+                    if (contato.getEmail() != null) contatoEncontrado.setEmail(contato.getEmail());
+                    if (contato.getTelefone() != null) contatoEncontrado.setTelefone(contato.getTelefone());
+                    return contatoRepository.save(contatoEncontrado);
+                })
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Contato não encontrado"));
 
     }
 
