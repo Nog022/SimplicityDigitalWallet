@@ -6,7 +6,9 @@ import com.simplicity.wallet.digital.SimplicityDigitalWallet.entity.Deposito;
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.entity.Saque;
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.entity.Transacao;
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.enums.TipoTransacao;
+import com.simplicity.wallet.digital.SimplicityDigitalWallet.repository.ContaRepository;
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.repository.TransacaoRepository;
+import com.simplicity.wallet.digital.SimplicityDigitalWallet.service.ContaService;
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.service.TransacaoService;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,9 @@ public class TransacaoServiceImpl implements TransacaoService {
 
     @Autowired
     private TransacaoRepository transacaoRepository;
+
+    @Autowired
+    private ContaService contaService;
 
     @Override
     public void transacao(Saque saque) {
@@ -75,8 +80,8 @@ public class TransacaoServiceImpl implements TransacaoService {
                 t.getId(),
                 t.getDataTransacao(),
                 t.getValor(),
-                t.getIdContaOrigem() != null ? t.getIdContaOrigem().getId() : null,
-                t.getIdContaDestino() != null ? t.getIdContaDestino().getId() : null,
+                t.getIdContaOrigem() != null ? t.getIdContaOrigem().getNumeroConta() : null,
+                t.getIdContaDestino() != null ? t.getIdContaDestino().getNumeroConta()  : null,
                 t.getTipoTransacao()
         )).collect(Collectors.toList());
     }
