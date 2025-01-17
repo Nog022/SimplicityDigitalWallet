@@ -34,12 +34,39 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
+                        //auth
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
+                        //conta
+                        .requestMatchers(HttpMethod.POST, "/conta/save").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/conta/delete/{numeroConta}").hasRole("USER")
+                        .requestMatchers(HttpMethod.GET, "/conta/{numeroConta}/saldo").hasRole("USER")
+                        //contato
+                        .requestMatchers(HttpMethod.POST, "/contato/save").hasRole("USER")
+                        .requestMatchers(HttpMethod.DELETE, "/contato/delete/{id}").hasRole("USER")
+                        .requestMatchers(HttpMethod.PUT, "/contato/update").hasRole("USER")
+                        .requestMatchers(HttpMethod.GET, "/contato/contatoById/{id}").hasRole("USER")
+                        //deposito
+                        .requestMatchers(HttpMethod.POST, "/deposito/gerarBoleto").hasRole("USER")
+                        .requestMatchers(HttpMethod.POST, "/deposito/pagarBoletoViaConta").hasRole("USER")
+                        .requestMatchers(HttpMethod.POST, "/deposito/pagarBoleto").hasRole("USER")
+                        //endereco
+                        .requestMatchers(HttpMethod.POST, "/endereco/save").hasRole("USER")
+                        .requestMatchers(HttpMethod.DELETE, "/endereco/delete/{id}").hasRole("USER")
+                        .requestMatchers(HttpMethod.PUT, "/endereco/update").hasRole("USER")
+                        .requestMatchers(HttpMethod.GET, "/endereco/enderecoById/{id}").hasRole("USER")
+                        //pix
+                        .requestMatchers(HttpMethod.POST, "/pix/save").hasRole("USER")
+                        //saque
+                        .requestMatchers(HttpMethod.POST, "/saque").hasRole("USER")
+                        //transacao
+                        .requestMatchers(HttpMethod.GET, "/transacao/extrato/{idConta}").hasRole("USER")
+                        //usuario
+                        .requestMatchers(HttpMethod.GET, "/usuario/usuarioById/{id}").hasRole("USER")
+                        .requestMatchers(HttpMethod.GET, "/usuario/usuarioByCpf/{cpf}").hasRole("USER")
+                        .requestMatchers(HttpMethod.PUT, "/usuario/updateUsuario").hasRole("USER")
 
-                        //TODO Colocar os endpoints com as roles que cada url precisa ser acessado
-//                        .requestMatchers(HttpMethod.POST, "/contato/save").hasRole("USER")
-//                        .requestMatchers(HttpMethod.GET, "/contato/contatoById/{id}").hasRole("USER")
+
                         .anyRequest().permitAll()
 
                 )

@@ -9,8 +9,8 @@ public record ExtratoDTO(
         Long id,
         Timestamp dataTransacao,
         BigDecimal valor,
-        Long idContaOrigem,
-        Long idContaDestino,
+        Long contaOrigem,
+        Long contaDestino,
         TipoTransacao tipoTransacao
 ) {
 }
