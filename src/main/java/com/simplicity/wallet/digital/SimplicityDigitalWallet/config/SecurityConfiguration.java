@@ -65,6 +65,7 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.GET, "/usuario/usuarioById/{id}").hasRole("USER")
                         .requestMatchers(HttpMethod.GET, "/usuario/usuarioByCpf/{cpf}").hasRole("USER")
                         .requestMatchers(HttpMethod.PUT, "/usuario/updateUsuario").hasRole("USER")
+                        .requestMatchers(HttpMethod.POST, "/usuario/mudarRole/{cpf}").hasRole("ADMIN")
 
 
                         .anyRequest().permitAll()

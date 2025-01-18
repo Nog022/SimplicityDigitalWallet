@@ -2,6 +2,7 @@ package com.simplicity.wallet.digital.SimplicityDigitalWallet.controller;
 
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.dto.AtualizarUsuarioDTO;
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.dto.DeleteResponseDTO;
+import com.simplicity.wallet.digital.SimplicityDigitalWallet.dto.MudarRoleResponseDTO;
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.entity.Usuario;
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,11 @@ public class UsuarioController {
         return usuarioService.updateUsuario(atualizarUsuarioDTO);
     }
 
+    @PostMapping("/mudarRole/{cpf}")
+    public ResponseEntity<MudarRoleResponseDTO> mudarRole(@PathVariable String cpf) {
+        return ResponseEntity.ok(new MudarRoleResponseDTO(usuarioService.mudarRole(cpf)));
+
+    }
 
 
 

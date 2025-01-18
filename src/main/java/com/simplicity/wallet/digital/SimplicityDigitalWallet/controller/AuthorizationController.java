@@ -3,6 +3,7 @@ package com.simplicity.wallet.digital.SimplicityDigitalWallet.controller;
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.config.TokenService;
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.dto.AuthorizationDTO;
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.dto.LoginResponseDTO;
+import com.simplicity.wallet.digital.SimplicityDigitalWallet.dto.MudarRoleResponseDTO;
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.dto.RegisterDTO;
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.entity.Conta;
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.entity.Contato;
@@ -23,10 +24,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -117,11 +115,5 @@ public class AuthorizationController {
 
 
     }
-
-
-
-
-
-
 
 }

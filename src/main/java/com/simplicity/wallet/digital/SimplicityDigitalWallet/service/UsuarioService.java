@@ -13,4 +13,6 @@ public interface UsuarioService {
 
     Usuario updateUsuario(AtualizarUsuarioDTO atualizarUsuarioDTO);
 
+    String mudarRole(String cpf);
+
 }
