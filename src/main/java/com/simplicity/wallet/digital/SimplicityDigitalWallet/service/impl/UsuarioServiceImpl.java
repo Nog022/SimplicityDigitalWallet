@@ -2,6 +2,7 @@ package com.simplicity.wallet.digital.SimplicityDigitalWallet.service.impl;
 
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.dto.AtualizarUsuarioDTO;
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.entity.*;
+import com.simplicity.wallet.digital.SimplicityDigitalWallet.enums.UserRole;
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.repository.UsuarioRepository;
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.service.*;
 import jakarta.transaction.Transactional;
@@ -68,6 +69,20 @@ public class UsuarioServiceImpl implements UsuarioService {
         return usuarioRepository.save(usuarioExistente);
     }
 
+    @Override
+    public String mudarRole(String cpf) {
+        Usuario usuario =  this.usuarioByCpf(cpf);
+
+        if(usuario.getRole() == UserRole.USER) {
+            usuario.setRole(UserRole.ADMIN);
+            usuarioRepository.save(usuario);
+            return usuario.getNome() + " agora é ADM do sistema!";
+        }
+
+
+
+        return usuario.getNome() + " já é ADM do sistema.";
+    }
 
 
 }
