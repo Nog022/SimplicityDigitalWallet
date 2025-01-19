@@ -16,4 +16,5 @@ public interface ContaService {
     void atualizarSaldoConta(Long numeroConta, BigDecimal valor, boolean isSaida);
     Conta buscarConta(Long numeroConta);
     List<Conta> findByUsuario_Id(Long id);
+    List<Conta> contaByCpf(String cpf);
 }

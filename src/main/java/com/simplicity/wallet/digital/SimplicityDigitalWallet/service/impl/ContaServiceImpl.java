@@ -13,12 +13,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
 import java.security.SecureRandom;
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -111,6 +114,17 @@ public class ContaServiceImpl implements ContaService {
             numeroConta = random.nextLong(10000000, 100000000);
         } while (contaRepository.findByNumeroConta(numeroConta).isPresent());
         return numeroConta;
+    }
+
+    @Override
+    public List<Conta> contaByCpf(String cpf){
+        Usuario usuario =  usuarioRepository.findByCpf(cpf).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario não encontrado"));
+        List<Conta> listaConta =  this.findByUsuario_Id(usuario.getId());
+        if(!listaConta.isEmpty()){
+            return listaConta;
+
+        }
+        return new ArrayList<Conta>();
     }
 
 

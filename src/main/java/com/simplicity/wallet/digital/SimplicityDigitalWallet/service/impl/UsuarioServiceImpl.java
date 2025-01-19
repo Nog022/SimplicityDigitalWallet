@@ -5,7 +5,6 @@ import com.simplicity.wallet.digital.SimplicityDigitalWallet.entity.*;
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.enums.UserRole;
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.repository.UsuarioRepository;
 import com.simplicity.wallet.digital.SimplicityDigitalWallet.service.*;
-import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,6 +82,8 @@ public class UsuarioServiceImpl implements UsuarioService {
 
         return usuario.getNome() + " já é ADM do sistema.";
     }
+
+
 
 
 }
