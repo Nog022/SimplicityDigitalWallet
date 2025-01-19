@@ -39,32 +39,32 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
                         //conta
                         .requestMatchers(HttpMethod.POST, "/conta/save").permitAll()
-                        .requestMatchers(HttpMethod.DELETE, "/conta/delete/{numeroConta}").hasRole("USER")
-                        .requestMatchers(HttpMethod.GET, "/conta/{numeroConta}/saldo").hasRole("USER")
+                        .requestMatchers(HttpMethod.DELETE, "/conta/delete/{numeroConta}").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/conta/{numeroConta}/saldo").hasAnyRole("USER", "ADMIN")
                         //contato
-                        .requestMatchers(HttpMethod.POST, "/contato/save").hasRole("USER")
-                        .requestMatchers(HttpMethod.DELETE, "/contato/delete/{id}").hasRole("USER")
-                        .requestMatchers(HttpMethod.PUT, "/contato/update").hasRole("USER")
-                        .requestMatchers(HttpMethod.GET, "/contato/contatoById/{id}").hasRole("USER")
+                        .requestMatchers(HttpMethod.POST, "/contato/save").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/contato/delete/{id}").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/contato/update").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/contato/contatoById/{id}").hasAnyRole("USER", "ADMIN")
                         //deposito
-                        .requestMatchers(HttpMethod.POST, "/deposito/gerarBoleto").hasRole("USER")
-                        .requestMatchers(HttpMethod.POST, "/deposito/pagarBoletoViaConta").hasRole("USER")
-                        .requestMatchers(HttpMethod.POST, "/deposito/pagarBoleto").hasRole("USER")
+                        .requestMatchers(HttpMethod.POST, "/deposito/gerarBoleto").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/deposito/pagarBoletoViaConta").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/deposito/pagarBoleto").hasAnyRole("USER", "ADMIN")
                         //endereco
-                        .requestMatchers(HttpMethod.POST, "/endereco/save").hasRole("USER")
-                        .requestMatchers(HttpMethod.DELETE, "/endereco/delete/{id}").hasRole("USER")
-                        .requestMatchers(HttpMethod.PUT, "/endereco/update").hasRole("USER")
-                        .requestMatchers(HttpMethod.GET, "/endereco/enderecoById/{id}").hasRole("USER")
+                        .requestMatchers(HttpMethod.POST, "/endereco/save").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/endereco/delete/{id}").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/endereco/update").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/endereco/enderecoById/{id}").hasAnyRole("USER", "ADMIN")
                         //pix
-                        .requestMatchers(HttpMethod.POST, "/pix/save").hasRole("USER")
+                        .requestMatchers(HttpMethod.POST, "/pix/save").hasAnyRole("USER", "ADMIN")
                         //saque
-                        .requestMatchers(HttpMethod.POST, "/saque").hasRole("USER")
+                        .requestMatchers(HttpMethod.POST, "/saque").hasAnyRole("USER", "ADMIN")
                         //transacao
-                        .requestMatchers(HttpMethod.GET, "/transacao/extrato/{idConta}").hasRole("USER")
+                        .requestMatchers(HttpMethod.GET, "/transacao/extrato/{idConta}").hasAnyRole("USER","ADMIN")
                         //usuario
-                        .requestMatchers(HttpMethod.GET, "/usuario/usuarioById/{id}").hasRole("USER")
-                        .requestMatchers(HttpMethod.GET, "/usuario/usuarioByCpf/{cpf}").hasRole("USER")
-                        .requestMatchers(HttpMethod.PUT, "/usuario/updateUsuario").hasRole("USER")
+                        .requestMatchers(HttpMethod.GET, "/usuario/usuarioById/{id}").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/usuario/usuarioByCpf/{cpf}").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/usuario/updateUsuario").hasAnyRole("USER", "ADMIN")
                         .requestMatchers(HttpMethod.POST, "/usuario/mudarRole/{cpf}").hasRole("ADMIN")
 
 
