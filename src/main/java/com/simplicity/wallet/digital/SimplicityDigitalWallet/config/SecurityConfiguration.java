@@ -46,6 +46,8 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.DELETE, "/contato/delete/{id}").hasAnyRole("USER", "ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/contato/update").hasAnyRole("USER", "ADMIN")
                         .requestMatchers(HttpMethod.GET, "/contato/contatoById/{id}").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/contato/contaByCpf/{cpf}").hasRole("ADMIN")
+
                         //deposito
                         .requestMatchers(HttpMethod.POST, "/deposito/gerarBoleto").hasAnyRole("USER", "ADMIN")
                         .requestMatchers(HttpMethod.POST, "/deposito/pagarBoletoViaConta").hasAnyRole("USER", "ADMIN")
